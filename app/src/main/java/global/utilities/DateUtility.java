@@ -16,6 +16,10 @@ public class DateUtility {
         return DATE_FORMAT.format(new Date());
     }
 
+    public static String toString(Date date) {
+        return DATE_FORMAT.format(date);
+    }
+
     public static String getStartMonthDate() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_MONTH, 1);

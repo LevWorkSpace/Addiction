@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">List1</string>
+    <string name="app_name">Addiction</string>
+    <string name="help">help</string>
+    <string name="testing_activity">Test Environment</string>
 </resources>

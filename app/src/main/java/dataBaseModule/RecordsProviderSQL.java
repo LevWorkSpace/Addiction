@@ -133,7 +133,7 @@ public class RecordsProviderSQL implements IRecordProvider {
         row.put(RecordEntry.COLUMN_NAME_CRATED_DATE, dailyUsageEntry.getCreatedDate());
         row.put(RecordEntry.COLUMN_NAME_TIME_IN_USE, dailyUsageEntry.getTimeInUse());
         row.put(RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK, dailyUsageEntry.getNumberOfUnlock());
-        if(dailyUsageEntry == null) {
+        if(dailyUsageEntry.Id == null) {
             db.insert(RecordEntry.TABLE_NAME, null, row);
         } else {
             db.update(RecordEntry.TABLE_NAME, row, "_id=" + dailyUsageEntry.Id, null);
@@ -142,16 +142,12 @@ public class RecordsProviderSQL implements IRecordProvider {
 
 	private void initDataBaseIfNotExist() {
 		//Clearing DB for test purpose
-        clearDailyUsageTable();
+        //clearDailyUsageTable();
 
         SQLiteDatabase db = SQLDbHelper.getWritableDatabase();
 		Cursor cursor = db.query(RecordEntry.TABLE_NAME, null, null, null, null, null, null);
 		if (cursor.getCount() == 0) {
-			ContentValues row = new ContentValues();
-            row.put(RecordEntry.COLUMN_NAME_CRATED_DATE, DateUtility.getTodayDate());
-            row.put(RecordEntry.COLUMN_NAME_TIME_IN_USE, DateUtility.getTodayDate());
-            row.put(RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK, "0");
-			db.insert(RecordEntry.TABLE_NAME, null, row);
+			saveDailyUsageRecord(DailyUsageEntry.getBlankRecord(), db);
 		}
 		cursor.close();
 		db.close();

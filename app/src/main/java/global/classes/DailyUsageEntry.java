@@ -2,6 +2,8 @@ package global.classes;
 
 import java.sql.Date;
 
+import global.utilities.DateUtility;
+
 public class DailyUsageEntry {
 	public String Id;
 	public Date CreatedDate;
@@ -32,7 +34,7 @@ public class DailyUsageEntry {
 	}
 	
 	public String getCreatedDate() {
-		return String.valueOf(TimeInUse);
+		return String.valueOf(CreatedDate);
 	}
 	
 	public Integer getNumberOfUnlock() {
@@ -41,5 +43,9 @@ public class DailyUsageEntry {
 
 	public String toString() {
 		return "CreatedDate: " + CreatedDate + ". TimeInUse: " + TimeInUse + ". NumberOfUnlock: " + NumberOfUnlock;
+	}
+
+	public static DailyUsageEntry getBlankRecord() {
+		return new DailyUsageEntry(DateUtility.getTodayDate(), "0", DateUtility.getTodayDate());
 	}
 }
