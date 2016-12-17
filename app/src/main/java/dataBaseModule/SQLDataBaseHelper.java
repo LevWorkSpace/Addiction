@@ -7,7 +7,7 @@ import dataBaseModule.RecordContract.RecordEntry;
 
 public class SQLDataBaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "DeviceUsage.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
@@ -17,7 +17,8 @@ public class SQLDataBaseHelper extends SQLiteOpenHelper {
 		RecordEntry.COLUMN_NAME_RECORD_ID + TEXT_TYPE + COMMA_SEP +
         RecordEntry.COLUMN_NAME_CRATED_DATE + TEXT_TYPE + COMMA_SEP +
         RecordEntry.COLUMN_NAME_TIME_IN_USE + TEXT_TYPE + COMMA_SEP +
-        RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK + TEXT_TYPE +
+        RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK + TEXT_TYPE + COMMA_SEP +
+        RecordEntry.COLUMN_NAME_UNLOCKED_DATE + TEXT_TYPE +
         " )";
 
     private static final String SQL_DELETE_ENTRIES =

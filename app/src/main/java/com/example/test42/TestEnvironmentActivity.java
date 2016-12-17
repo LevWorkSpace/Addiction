@@ -53,6 +53,7 @@ public class TestEnvironmentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 recordProvider.saveDailyUsageRecords(new DailyUsageEntry(createdDateView.getText().toString(),
                                                                          numberOfUnlockView.getText().toString(),
+                                                                         "0",
                                                                          DateUtility.getTodayDate()));
                 showAllRecords();
                 clearInputViews();

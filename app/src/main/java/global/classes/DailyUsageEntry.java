@@ -1,51 +1,77 @@
 package global.classes;
 
-import java.sql.Date;
+import android.util.Log;
+
+import java.text.ParseException;
+import java.util.Date;
 
 import global.utilities.DateUtility;
 
 public class DailyUsageEntry {
-	public String Id;
-	public Date CreatedDate;
-	public Integer NumberOfUnlock;
-	public Date TimeInUse;
+	private String id;
+	private String createdDate;
+	private Integer numberOfUnlock;
+	private Float timeInUse;
+	private Date unlockedDate;
 
-	public DailyUsageEntry(Date created_date, Integer number_of_unlock, Date time_in_use) {
-		CreatedDate = created_date;
-		NumberOfUnlock = number_of_unlock;
-		TimeInUse = time_in_use;
+	public DailyUsageEntry(Date createdDate, Integer numberOfUnlock, Float timeInUse, Date unlockedDate) {
+		this.createdDate = DateUtility.toString(createdDate);
+		this.numberOfUnlock = numberOfUnlock;
+		this.timeInUse = timeInUse;
+		this.unlockedDate = unlockedDate;
 	}
 
-	public DailyUsageEntry(String created_date, String number_of_unlock, String time_in_use) {
-		CreatedDate = Date.valueOf(created_date);
-		NumberOfUnlock = Integer.valueOf(number_of_unlock);
-		TimeInUse = Date.valueOf(time_in_use);
+	public DailyUsageEntry(String createdDate, String numberOfUnlock, String timeInUse, String unlockedDate) {
+		this.createdDate = createdDate;
+		this.numberOfUnlock = Integer.valueOf(numberOfUnlock);
+		this.timeInUse = Float.valueOf(timeInUse);
+		this.unlockedDate = DateUtility.parseDateTime(unlockedDate);
 	}
 
-	public DailyUsageEntry(String created_date, String number_of_unlock, String time_in_use, String id) {
-		CreatedDate = Date.valueOf(created_date);
-		NumberOfUnlock = Integer.valueOf(number_of_unlock);
-		TimeInUse = Date.valueOf(time_in_use);
-		Id = id;
+	public DailyUsageEntry(String createdDate, String numberOfUnlock, String timeInUse, String unlockedDate, String id) {
+		this.id = id;
+		this.createdDate = createdDate;
+		this.numberOfUnlock = Integer.valueOf(numberOfUnlock);
+		this.timeInUse = Float.valueOf(timeInUse);
+		this.unlockedDate = DateUtility.parseDateTime(unlockedDate);
 	}
-	
+
 	public String getTimeInUse() {
-		return String.valueOf(TimeInUse);
+		return String.valueOf(timeInUse);
 	}
 	
-	public String getCreatedDate() {
-		return String.valueOf(CreatedDate);
-	}
+	public String getCreatedDate() {return createdDate;}
 	
 	public Integer getNumberOfUnlock() {
-		return NumberOfUnlock;
+		return numberOfUnlock;
+	}
+
+	public String getUnlockedDate() {
+		return DateUtility.toStringTime(unlockedDate);
 	}
 
 	public String toString() {
-		return "CreatedDate: " + CreatedDate + ". TimeInUse: " + TimeInUse + ". NumberOfUnlock: " + NumberOfUnlock;
+		return "CreatedDate: " + createdDate + ". TimeInUse: " + timeInUse + ". NumberOfUnlock: " + numberOfUnlock + ". UnlockedDate: " + unlockedDate;
+	}
+
+	public void phoneUnlocked() {
+		numberOfUnlock++;
+		unlockedDate = new Date();
+	}
+
+	public void phoneLocked() {
+		if(unlockedDate != null) {
+			Date now = new Date();
+			long timeInMilliSec = now.getTime() - unlockedDate.getTime();
+			this.timeInUse += (float)timeInMilliSec / 1000 / 60;
+		}
 	}
 
 	public static DailyUsageEntry getBlankRecord() {
-		return new DailyUsageEntry(DateUtility.getTodayDate(), "0", DateUtility.getTodayDate());
+		return new DailyUsageEntry(DateUtility.getTodayDate(), "0", "0.0", null);
+	}
+
+	public String getId() {
+		return id;
 	}
 }

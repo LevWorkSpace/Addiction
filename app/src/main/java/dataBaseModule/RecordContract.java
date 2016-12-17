@@ -13,5 +13,6 @@ public final class RecordContract {
         public static final String COLUMN_NAME_CRATED_DATE = "created_date";
         public static final String COLUMN_NAME_TIME_IN_USE = "time_in_use";
         public static final String COLUMN_NAME_NUMBER_OF_UNLOCK = "number_of_unlock";
+        public static final String COLUMN_NAME_UNLOCKED_DATE = "unlocked_date";
     }
 }

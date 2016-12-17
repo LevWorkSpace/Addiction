@@ -46,7 +46,12 @@ public class RecordsProviderSQL implements IRecordProvider {
 
 	@Override
 	public DailyUsageEntry getTodayDailyUsageRecord() {
-		return getWrapDailyUsageRecordsWithClause(DAILY_WHERE_CLAUSE, DAILY_CLAUSE_ARGUMENTS).get(0);
+		List<DailyUsageEntry> today = getWrapDailyUsageRecordsWithClause(DAILY_WHERE_CLAUSE, DAILY_CLAUSE_ARGUMENTS);
+		if (today.isEmpty()) {
+			return DailyUsageEntry.getBlankRecord();
+		} else {
+			return today.get(0);
+		}
 	}
 
 	@Override
@@ -90,7 +95,8 @@ public class RecordsProviderSQL implements IRecordProvider {
 			RecordEntry.COLUMN_NAME_CRATED_DATE,
 			RecordEntry.COLUMN_NAME_TIME_IN_USE,
 			RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK,
-		    };
+			RecordEntry.COLUMN_NAME_UNLOCKED_DATE
+		};
 		
 		String sortOrder =
 				RecordEntry.COLUMN_NAME_CRATED_DATE + " DESC";
@@ -118,6 +124,7 @@ public class RecordsProviderSQL implements IRecordProvider {
 					records.add(new DailyUsageEntry(cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_NAME_CRATED_DATE)),
 													cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK)),
 													cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_NAME_TIME_IN_USE)),
+													cursor.getString(cursor.getColumnIndex(RecordEntry.COLUMN_NAME_UNLOCKED_DATE)),
                                                     cursor.getString(cursor.getColumnIndex(RecordEntry._ID))));
 				} while (cursor.moveToNext());
 			}
@@ -133,10 +140,11 @@ public class RecordsProviderSQL implements IRecordProvider {
         row.put(RecordEntry.COLUMN_NAME_CRATED_DATE, dailyUsageEntry.getCreatedDate());
         row.put(RecordEntry.COLUMN_NAME_TIME_IN_USE, dailyUsageEntry.getTimeInUse());
         row.put(RecordEntry.COLUMN_NAME_NUMBER_OF_UNLOCK, dailyUsageEntry.getNumberOfUnlock());
-        if(dailyUsageEntry.Id == null) {
+		row.put(RecordEntry.COLUMN_NAME_UNLOCKED_DATE, dailyUsageEntry.getUnlockedDate());
+        if(dailyUsageEntry.getId() == null) {
             db.insert(RecordEntry.TABLE_NAME, null, row);
         } else {
-            db.update(RecordEntry.TABLE_NAME, row, "_id=" + dailyUsageEntry.Id, null);
+            db.update(RecordEntry.TABLE_NAME, row, "_id=" + dailyUsageEntry.getId(), null);
         }
     }
 
